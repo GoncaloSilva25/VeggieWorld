@@ -3,7 +3,7 @@ export default StyleSheet.create({
 
     recipesButton: {
         backgroundColor: '#90EE90',
-        width: 300,
+        width: 100,
         height: 100,
     },
 

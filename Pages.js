@@ -351,15 +351,46 @@ export const VeggieEaters = ( { navigation }) => {
 export const Recipes = ( { navigation }) => {
   const [modalOpen, setModalOpen] = useState(false);
   const filters = ["All", "Most Recent", "Most Popular", "Most Rated", "Favourites"]
+
+  const recipeTitles = {
+    pipis: 'Pipis in spicy broth',
+    green_noodes: 'Green Tea Noodles with sicky salmon',
+    sesame_beef: 'Sesame beef with gochujang udon noodles',
+  }
   const recipeImages = {
     pipis: require('./assets/recipe1.jpeg'),
-    green_noodles: require('./assets/recipe2.jpeg')
+    green_noodles: require('./assets/recipe2.jpeg'),
+    sesame_beef: require('./assets/recipe3.jpeg')
+  }
+
+  const recipesDescriptions = {
+    pipis: 'Pipis in spicy broth\n\nMake the most of tomatoes with this summer pipi dish.',
+    green_noodes: 'Green Tea Noddles with sticky salmon\n\nBring a pop of colour to this easy midweek dinner.',
+    sesame_beef: 'Sesame beef with gochujang udon noodles\n\nMove over 2-minute noodles, this beef and udon dish will make your evening.',
+  }
+
+  const recipesContent = {
+    pipis: "Ingredients:\n - 1/3 cup (80ml) vegetable oil\n - 4 eschalots, thinly sliced\n - 4 garlic cloves, thinly sliced\n - 1 lemongrass stalk, halved and bruised\n - 2 kaffir lime leaves\n - 5cm piece (25g) ginger, thinly sliced\n - 5cm piece (25g) galangal, finely grated\n - 1/2 bunch coriander, stems finely chopped, leaves picked and finely chopped\n - 1 long red chilli, finely chopped, plus extra to serve\n - 2 tbs fish sauce\n - 2 tbs sambal oelek\n - 500g ripe tomatoes, finely chopped\n - 200g grape tomatoes\n - 1kg pot-ready pipis, purged\n - Lime wedges, to serve \n\nMethod:\n1. Heat oil in a wok over high heat. Add eschalot, garlic, lemongrass, lime leaves, ginger, galangal, coriander stems and chilli, and cook for 5-6 minutes or until caramelised and fragrant. Add fish sauce, sambal oelek and tomatoes, and cook for 6-8 minutes until softened and juicy. Add the pipis, cover with a lid and cook for 6-7 minutes until the pipis have opened. Discard any unopened pipis. Serve topped with extra chilli, coriander leaves and lime wedges.",
+    green_noodles: "Ingredients:\n - 1/2 cup (125ml) peanut oil\n - 1 tbs finely chopped ginger\n - 3 long green shallots, thinly sliced\n - 1 lemongrass stalk (white part only), finely grated\n - 1 1/2 tbs runny honey\n - 2 tbs extra virgin olive oil\n - 80g chilli paste in soybean oil\n - 600g whole skinless salmon fillet, pin-boned\n - 240g packet dried green tea noodles\n - 1/3 cup (80ml) lime juice\n - 2 1/2 tsp caster sugar\n - 2 tsp fish sauce\n - 1/2 tsp chilli flakes, plus extra to serve\n\nMethod:\n1. Preheat oven to 220°C. Heat peanut oil in a small saucepan over low heat. Add ginger, long green shallot, lemongrass and a pinch of salt. Cook, stirring occasionally, for 6-8 minutes until long green shallot is very soft but not coloured. Remove from heat and cool.\n2. Meanwhile, combine honey, olive oil and chilli paste in a bowl. Stir to combine. Line a baking tray with baking paper and add salmon. Rub honey mixture over salmon to coat, then season. Roast for 12-15 minutes for medium. Set aside, loosely covered with foil, to rest for 5 minutes.\n3. Cook noodles according to packet instructions. Drain and rinse briefly with warm water.\n4. Whisk lime juice, sugar, fish sauce and chilli flakes into the shallot oil mixture. Place noodles in a large bowl with three quarters of the shallot oil, season and toss to combine. Arrange on a serving platter and flake salmon over the top. Drizzle over remaining shallot oil and scatter with extra chilli flakes, toasted sesame seeds and shiso leaves. Serve at room temperature or chilled.",
+    sesame_beef: "Ingredients:\n - 400g skirt beef steak\n - 2 tsp sesame oil\n - 400g udon noodles\n - 50g unsalted butter, chopped\n - 150g mixed Asian mushrooms, sliced\n - 1/4 cup gochujang (Korean fermented chilli paste)\n - 1 tbs tomato sauce\n - 120g baby spinach leaves\n - 1 bunch broccolini, cut in half on the diagonal, blanched\n - Chopped nori & toasted sesame seeds, to serve\n\nMethod:\n1. Place the skirt steak on a large oven tray, season with salt flakes and drizzle with the sesame oil. Leave steak to stand at room temperature for 30 minutes or until the fridge chill has gone.\n2.Cook the udon noodles according to packet instructions, reserving 1 cup (250ml) of noodle water.\n3.Heat a lightly greased barbecue or chargrill pan over high heat. Grill the steak for 3-4 minutes on each side until cooked to your liking. Remove from the heat and rest, loosely covered with foil, for 10-12 minutes.\n4.Meanwhile, heat half the butter in a large non-stick frypan over medium-high heat. Add the mushroom and cook for 2-3 minutes until golden. Remove and set aside. Add the gochujang and tomato sauce to the pan and cook, stirring, for 1-2 minutes until the gochujang is lightly caramelised. Add the noodle water and bring to a simmer, cooking for 2-3 minutes until the liquid is slightly reduced.\n5.Add the noodles, spinach and remaining butter, and stir until spinach is wilted and noodles are coated in the sauce.\n6.Divide noodles among serving plates, top with sliced steak, broccolini, mushroom and nori. Sprinkle with sesame seeds to serve.",
   }
   
-  const stateChange = () => {
-    this.state.check === false ? this.setState({logo: 'md-heart', check: true}) : this.setState({logo: 'md-heart-outline', check: false})
+  const RecipesList = [
+    {recipeName: recipeTitles.pipis, recipeImagePath: recipeImages.pipis, recipeDescription: recipesDescriptions.pipis, recipeContent: recipesContent.pipis},
+    {recipeName: recipeTitles.green_noodes, recipeImagePath: recipeImages.green_noodles, recipeDescription: recipesDescriptions.green_noodes, recipeContent: recipesContent.green_noodles},
+    {recipeName: recipeTitles.sesame_beef, recipeImagePath: recipeImages.sesame_beef, recipeDescription: recipesDescriptions.sesame_beef, recipeContent: recipesContent.sesame_beef},
+    {recipeName: recipeTitles.pipis, recipeImagePath: recipeImages.pipis, recipeDescription: recipesDescriptions.pipis, recipeContent: recipesContent.pipis},
+    {recipeName: recipeTitles.green_noodes, recipeImagePath: recipeImages.green_noodles, recipeDescription: recipesDescriptions.green_noodes, recipeContent: recipesContent.green_noodles},
+    {recipeName: recipeTitles.sesame_beef, recipeImagePath: recipeImages.sesame_beef, recipeDescription: recipesDescriptions.sesame_beef, recipeContent: recipesContent.sesame_beef}];
+
+  const SelectedRecipesList = [];
 
 
+  const openModalRecipe = (recipeName, recipeImagePath, recipeContent) => {
+    Constants.SelectedRecipe.recipeName = recipeName;
+    Constants.SelectedRecipe.recipeImagePath = recipeImagePath;
+    Constants.SelectedRecipe.recipeContent = recipeContent;
+    setModalOpen(true);
   }
   return (
     <View style={{backgroundColor: '#90EE90',flex:1}}>
@@ -409,74 +440,43 @@ export const Recipes = ( { navigation }) => {
         <View style={{paddingLeft: 50, paddingTop: 30}}>
           <Text>Pick a Recipe:</Text>
           <View style={{height: 270}}>
-          <ScrollView>
-            <View style={{paddingTop: 10}}>
-              <Pressable style={styles.recipesButton} onPress={() => setModalOpen(true)}>
+          <FlatList data={RecipesList} renderItem={({item}) => <View style={{paddingTop: 15}}>
                 <View style={{flexDirection: 'row'}}>
-                <Image style={styles.recipeImage} source={recipeImages.pipis} />
-                <Text style={{flexShrink:1, paddingLeft: 5}}>Pipis in spicy broth{'\n'}{'\n'}Make the most of tomatoes with this summer pipi dish. {'\n'}{'\n'}Time to Cook: 30 minutes</Text>
+                <Pressable style={styles.recipesButton} onPress={() => openModalRecipe(item.recipeName, item.recipeImagePath, item.recipeContent)}>
+                <Image style={styles.recipeImage} source={item.recipeImagePath} />
+                </Pressable>
+                <Text style={{flexShrink:1, paddingLeft: 5}}>{item.recipeDescription}</Text>
                 </View>
-              </Pressable>
-            </View>
-            <View style={{paddingTop: 15}}>
-              <Pressable style={styles.recipesButton}>
-                <View style={{flexDirection: 'row'}}>
-                <Image style={styles.recipeImage} source={recipeImages.green_noodles} />
-                <Text style={{flexShrink:1, paddingLeft: 5}}>Green Tea Noddles with sticky salmon{'\n'}Bring a pop of colour to this easy midweek dinner.{'\n'}{'\n'}Time to Cook: 30 minutos</Text>
-                </View>
-              </Pressable>
-            </View>
-            <View style={{paddingTop: 15}}>
-              <Pressable style={styles.recipesButton}>
-                <View style={{flexDirection: 'row'}}>
-                <Image style={styles.recipeImage} source={recipeImages.green_noodles} />
-                <Text style={{flexShrink:1, paddingLeft: 5}}>Green Tea Noddles with sticky salmon{'\n'}Bring a pop of colour to this easy midweek dinner.{'\n'}{'\n'}Time to Cook: 30 minutos</Text>
-                </View>
-              </Pressable>
-            </View>
-            <View style={{paddingTop: 15}}>
-              <Pressable style={styles.recipesButton}>
-                <View style={{flexDirection: 'row'}}>
-                <Image style={styles.recipeImage} source={recipeImages.green_noodles} />
-                <Text style={{flexShrink:1, paddingLeft: 5}}>Green Tea Noddles with sticky salmon{'\n'}Bring a pop of colour to this easy midweek dinner.{'\n'}{'\n'}Time to Cook: 30 minutos</Text>
-                </View>
-              </Pressable>
-            </View>
-          </ScrollView>
+
+            </View>}/>
           </View>
         </View>
 
       <Modal visible={modalOpen} transparent={true}>
         <View style={styles.modalContentRecipe}>
             <View style={styles.innerModalRecipe}>
+            <ScrollView>
               <View style={{flexDirection:'row'}}>
                 <Pressable style={{paddingTop:5, paddingLeft:5}}>
                   <FontAwesome name="md-heart-outline" size={25} color='gray' invisible={true} check />
                 </Pressable>
-                <Pressable onPress={() => setModalOpen(false)} style={{paddingLeft: 290, paddingTop: 5}}>
+                <Pressable onPress={() => setModalOpen(false)} style={{paddingLeft: 280, paddingTop: 5}}>
                   <FontAwesome name="md-close" size={25}/>
                 </Pressable>
               </View>
               <View style={{alignItems: 'center'}}>
-              <Image style={styles.recipeFullImage} source={recipeImages.green_noodles} />
+              <Image style={styles.recipeFullImage} source={Constants.SelectedRecipe.recipeImagePath} />
               </View>
               <View style={{alignItems: 'center', paddingTop: 15}}>
-                <Text style={{fontSize: 18, fontWeight: 'bold'}}>Green Tea Noodles</Text>
+                <Text style={{fontSize: 18, fontWeight: 'bold'}}>{Constants.SelectedRecipe.recipeName}</Text>
                 <Text>Difficulty: Easy | 30 minutes</Text>
               </View>
-              <View style={{height: 200}}>
-                <ScrollView>
                 <View style={{paddingTop: 15, paddingLeft: 15}}>
                   <Text>
-                    1. Preheat oven to 220°C. Heat peanut oil in a small saucepan over low heat. Add ginger, long green shallot, lemongrass and a pinch of salt. Cook, stirring occasionally, for 6-8 minutes until long green shallot is very soft but not coloured. Remove from heat and cool.{'\n'}
-                    2. Meanwhile, combine honey, olive oil and chilli paste in a bowl. Stir to combine. Line a baking tray with baking paper and add salmon. Rub honey mixture over salmon to coat, then season. Roast for 12-15 minutes for medium. Set aside, loosely covered with foil, to rest for 5 minutes.{'\n'}
-                    3. Cook noodles according to packet instructions. Drain and rinse briefly with warm water.{'\n'}
-                    4. Whisk lime juice, sugar, fish sauce and chilli flakes into the shallot oil mixture. Place noodles in a large bowl with three quarters of the shallot oil, season and toss to combine. Arrange on a serving platter and flake salmon over the top. Drizzle over remaining shallot oil and scatter with extra chilli flakes, toasted sesame seeds and shiso leaves. Serve at room temperature or chilled.
+                    {Constants.SelectedRecipe.recipeContent}
                   </Text>
-                </View>
-                </ScrollView>
-              </View>
-              
+                </View>  
+              </ScrollView>
             </View>
         </View>
       </Modal>
