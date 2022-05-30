@@ -7,6 +7,12 @@ export default StyleSheet.create({
         height: 100,
     },
 
+    list: {
+      justifyContent: 'center',
+      flexDirection: 'column',
+    },
+
+
     recipeImage: {
       width: 100,
       height: 100,
@@ -86,6 +92,7 @@ export default StyleSheet.create({
       backgroundColor: 'white',
       width: 75,
       height: 75,
+      paddingRight: 0
   },
 
     container_VeggieEaterPageButtons: {

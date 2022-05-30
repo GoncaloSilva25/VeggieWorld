@@ -78,9 +78,10 @@ export const VeggieEaters = ( { navigation }) => {
     carlos: require('./assets/child2.jpg'),
   }
 
-  const goToEspecificVeggieEater = (name, photoPath) => {
+  const goToEspecificVeggieEater = (name, photoPath, veggieList) => {
     Constants.SelectedVeggieEater.name = name;
     Constants.SelectedVeggieEater.veggieEaterImagePath = photoPath;
+    Constants.SelectedVeggieEater.VegetableList = veggieList;
     navigation.navigate('Veggie Eater');
   }
   return (
@@ -103,7 +104,7 @@ export const VeggieEaters = ( { navigation }) => {
 
     <View style={styles.veggieEaterButtonContainer}>
       <View style={styles.container_button1}>
-        <Pressable style={styles.veggieEaterButton} onPress={() => goToEspecificVeggieEater('Arla', veggieEaterImages.arla)}>
+        <Pressable style={styles.veggieEaterButton} onPress={() => goToEspecificVeggieEater('Arla', veggieEaterImages.arla, Constants.VegetableListArla)}>
           <Image style={styles.squareVeggieEater} source={veggieEaterImages.arla} />
         </Pressable>
         <Text style={styles.veggieEaterName}>Arla</Text>
@@ -112,7 +113,7 @@ export const VeggieEaters = ( { navigation }) => {
 
       </View>
       <View style={styles.container_button2}>
-        <Pressable style={styles.veggieEaterButton} onPress={() => goToEspecificVeggieEater('Carlos', veggieEaterImages.carlos)}>
+        <Pressable style={styles.veggieEaterButton} onPress={() => goToEspecificVeggieEater('Carlos', veggieEaterImages.carlos, Constants.VegetableListCarlos)}>
           <Image style={styles.squareVeggieEater} source={veggieEaterImages.carlos} />
         </Pressable>
         <Text style={styles.veggieEaterName}>Carlos</Text>
@@ -141,10 +142,13 @@ export const VeggieEaters = ( { navigation }) => {
 
   export const VeggieEater = ( { navigation }) => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [toggleCheckBoxRaw, setToggleCheckBoxRaw] = useState(false)
-    const [toggleCheckBoxCooked, setToggleCheckBoxCooked] = useState(false)
-    const [list, setList] = useState(Constants.VegetableList)
+    const [toggleCheckBoxRaw, setToggleCheckBoxRaw] = useState(false);
+    const [toggleCheckBoxCooked, setToggleCheckBoxCooked] = useState(false);
+    const [list, setList] = useState(Constants.SelectedVeggieEater.VegetableList);
     const [veggieUnits, setUnits] = useState(0);
+    const [searchQuery, setSearchQuery] = useState('');
+    const [modalRecipeOpen, setModalRecipeOpen] = useState(false);
+    
     const vegetableImages = {
       tomato: require('./assets/tomate-1.png'),
       carrot: require('./assets/carrot.png'),
@@ -154,6 +158,41 @@ export const VeggieEaters = ( { navigation }) => {
       eggplant: require('./assets/eggplant.png'),
 
     };
+
+    const recipeImages = {
+      pipis: require('./assets/recipe1.jpeg'),
+      green_noodes: require('./assets/recipe2.jpeg'),
+    };
+
+    const recipeIngredients = {
+      pipis: [{name: "Eschalot", quantity: 4}, {name: "Garlic", quantity: 4}, {name: "Tomato", quantity: 5}, ],
+      green_noodes: [{name: "Shallot", quantity: 3}, {name: "Lemongrass", quantity: 1}, {name: "Chilli", quantity: 5}],
+    }
+
+    const vegetableNames = {
+      tomato: "Tomato",
+      carrot: "Carrot",
+      lettuce: "Lettuce",
+      potato: "Potato",
+      onion: "Onion",
+      eggplant: "Eggplant",
+    };
+
+    const vegetables = [
+      {name: vegetableNames.tomato, imagePath: vegetableImages.tomato},
+      {name: vegetableNames.carrot, imagePath: vegetableImages.carrot},
+      {name: vegetableNames.lettuce, imagePath: vegetableImages.lettuce},
+      {name: vegetableNames.potato, imagePath: vegetableImages.potato},
+      {name: vegetableNames.onion, imagePath: vegetableImages.onion},
+      {name: vegetableNames.eggplant, imagePath: vegetableImages.eggplant},
+    ];
+
+    const recipesFavoritas = [
+      {name: 'Pipis in spicy broth', imagePath: recipeImages.pipis},
+      {name: 'Green Tea Noodles with sticky', imagePath: recipeImages.green_noodes},
+    ];
+
+    const [selectedVeggies, setSelectedVeggies] = useState(vegetables);
 
     const updateVegetable = (nam, val) => {
       // Find the item to update and store it in new list 
@@ -191,6 +230,39 @@ export const VeggieEaters = ( { navigation }) => {
       })
     }
 
+    const onChangeSearch  = query => {
+      setSearchQuery(query);
+      if (searchQuery == ''){
+        setSelectedVeggies(vegetables);
+        let newList = [];
+        vegetables.map((item) => {if((item.name.toLowerCase()).includes(searchQuery.toLowerCase())){newList.push(item)}});
+        setSelectedVeggies(newList);
+      }
+      else {
+        setSelectedVeggies(vegetables);
+      }
+    }
+      
+
+    const onSearchVeggie = () => {
+      let newList = [];
+      vegetables.map((item) => {if((item.name.toLowerCase()).includes(searchQuery.toLowerCase())){newList.push(item)}});
+      setSelectedVeggies(newList);
+    }
+    
+    const openRecipeModal = () => {
+      setModalRecipeOpen(true);
+    }
+    const addRecipe = (recipeName) => {
+      switch(recipeName){
+        case "Pipis in spicy broth":
+          recipeIngredients.pipis.map((item) => {addVegetable(item.name, item.quantity)});
+        case "Green Tea Noodles with sticky":
+          recipeIngredients.green_noodes.map((item) => {addVegetable(item.name, item.quantity)});
+      }
+      setModalRecipeOpen(false);
+    }
+
     return (
       <View style={{backgroundColor: '#90EE90',flex:1}}>
         <View style={{height: 10}}></View>
@@ -213,20 +285,20 @@ export const VeggieEaters = ( { navigation }) => {
           <View style={{width:30}}>
           </View>
           <View style={{height: 105, flexShrink:1, borderLeftColor: 'gray', borderLeftWidth: 2, paddingLeft: 10}}>
-          <FlatList data={Constants.VegetableList} renderItem={({item}) => <Text style={{fontSize: 15}}> - {item.name + ' ' +  item.value}</Text>}/>
+          <FlatList data={list} renderItem={({item}) => <Text style={{fontSize: 15}}> - {item.name + ' ' +  item.value}</Text>}/>
           </View>
         </View>
 
         <View style={{flexDirection: 'row', paddingTop: 6}}>
           <View style={styles.searchBarContainer}>
             <View>
-              <Text style={{paddingBottom: 2, paddingTop: 2}}>Search for vegetable</Text>
+              <Text style={{paddingBottom: 2, paddingTop: 25}}>Search for vegetable</Text>
             </View>
             <Searchbar containerStyle={styles.searchBarContainer} placeholder="Vegetable"
-            inputStyle={{fontSize: 16}}/>
+            inputStyle={{fontSize: 16}} onIconPress={onSearchVeggie} onChangeText={onChangeSearch} value={searchQuery}/>
           </View>
           <View style={styles.container_VeggieEaterPageButtons}>
-              <Pressable style={styles.veggieEaterPageButtons}>
+              <Pressable style={styles.veggieEaterPageButtons} onPress={() => onSearchVeggie()}>
                 <Text style={styles.text}>Search</Text>
               </Pressable>
           </View>
@@ -235,59 +307,22 @@ export const VeggieEaters = ( { navigation }) => {
           <Text style={{paddingRight: 88, fontSize: 14, paddingTop: 5, fontWeight: 'bold'}}>OR</Text>
         </View>
         <View style={styles.container_VeggieEaterPageButtonsRecipe}>
-              <Pressable style={styles.veggieEaterPageButtons} onPress={() => navigation.navigate('Veggie Eaters')}>
+              <Pressable style={styles.veggieEaterPageButtons} onPress={() => openRecipeModal()}>
                 <Text style={styles.text}>Add Recipe</Text>
               </Pressable>
         </View>
         <View style={{paddingTop: 30, height: 240}}>
         <Text style={{paddingLeft: 48, paddingBottom: 5}}>Pick a vegetable:</Text>
-        <View style={{alignItems:'center'}}>
-        <ScrollView style={{borderWidth: 2, borderColor: 'gray', width: 300, backgroundColor:'white'}}>
-          <View style={{flexDirection: 'row'}}>
-            <View style={{width:76, alignItems:'center'}}>
-              <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable('Tomato', vegetableImages.tomato)}>
-                <Image style={styles.veggetableImages} source={vegetableImages.tomato} />
+        <View style={{alignItems: 'center'}}>
+        <View style={{borderWidth: 2, borderColor: 'gray', width: 300, backgroundColor:'white', alignItems:'center', height: 200}}>
+        <FlatList data={selectedVeggies} numColumns={3} contentContainerStyle={styles.list} renderItem={({item}) => <View style={{width:76, alignItems:'center'}}>
+              <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable(item.name, item.imagePath)}>
+                <Image style={styles.veggetableImages} source={item.imagePath} />
               </Pressable>
-              <Text>Tomato</Text>
-            </View>
-            <View style={{width: 34}}></View>
-            <View style={{width: 73}}>
-              <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable('Carrot', vegetableImages.carrot)}>
-                <Image style={styles.veggetableImages} source={vegetableImages.carrot} />
-              </Pressable>
-              <Text style={{paddingLeft: 18}}>Carrot</Text>
-            </View>
-            <View style={{width: 34}}></View>
-            <View style={{width: 76}}>
-              <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable('Lettuce', vegetableImages.lettuce)}>
-                <Image style={styles.veggetableImages} source={vegetableImages.lettuce} />
-              </Pressable>
-              <Text  style={{paddingLeft: 14}}>Lettuce</Text>
-            </View>
-          </View>
-          <View style={{flexDirection: 'row', paddingTop: 10}}>
-            <View style={{width:76}}>
-              <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable('Potato', vegetableImages.potato)}>
-                <Image style={styles.veggetableImages} source={vegetableImages.potato} />
-              </Pressable>
-              <Text style={{paddingLeft: 18}}>Potato</Text>
-            </View>
-            <View style={{width: 34}}></View>
-            <View style={{width: 76}}>
-              <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable('Onion', vegetableImages.onion)}>
-                <Image style={styles.veggetableImages} source={vegetableImages.onion} />
-              </Pressable>
-              <Text style={{paddingLeft: 18}}>Onion</Text>
-            </View>
-            <View style={{width: 34}}></View>
-            <View style={{width: 76}}>
-              <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable('Eggplant', vegetableImages.eggplant)}>
-                <Image style={styles.veggetableImages} source={vegetableImages.eggplant} />
-              </Pressable>
-              <Text>Eggplant</Text>
-            </View>
-          </View>
-        </ScrollView>
+              <Text>{item.name}</Text>
+            </View>}
+        />
+        </View>
         </View>
       </View> 
 
@@ -324,6 +359,30 @@ export const VeggieEaters = ( { navigation }) => {
                   <Text style={{color: 'gray', fontSize: 14, fontWeight: 'bold'}}>Add Vegetable</Text>
                 </Pressable>
               </View>
+            </View>
+        </View>
+      </Modal>
+      <Modal visible={modalRecipeOpen} transparent={true}>
+        <View style={styles.modalContent}>
+            <View style={styles.innerModal}>
+              <Pressable onPress={() => setModalRecipeOpen(false)} style={{paddingLeft: 265}}>
+                <FontAwesome name="md-close" size={25}/>
+              </Pressable>
+              <View style={{alignItems: 'center'}}>
+                <Text style={{color: 'white', fontSize: 20}}>Favourite Recipes</Text>
+              </View>
+              <View style={{borderWidth: 2, borderColor: 'gray', width: 300, height: 300}}>
+                <FlatList data={recipesFavoritas} renderItem={({item}) => <View style={{paddingTop: 15}}>
+                <View style={{flexDirection: 'row', paddingLeft: 20}}>
+                  <Image style={styles.recipeImage} source={item.imagePath} />
+                  <Text style={{width: 130,paddingLeft: 5, color: 'white'}}>{item.name}</Text>
+                  <Pressable style={{paddingTop: 40}} onPress={() => addRecipe(item.name)}>
+                    <FontAwesome name="md-add-circle-outline" size={25}/>
+                  </Pressable>
+                </View>
+            </View>}
+        />
+        </View>
             </View>
         </View>
       </Modal>
