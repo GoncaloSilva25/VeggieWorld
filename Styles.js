@@ -109,8 +109,6 @@ export default StyleSheet.create({
         paddingTop: 3,
       },
 
-
-
     searchBarContainer: {
       paddingTop:20,
       paddingLeft:25,
@@ -186,7 +184,6 @@ export default StyleSheet.create({
 
     backButton: {
         paddingHorizontal: 21,
-        backgroundColor: '#90EE90',
         width: 325,
       },
 
@@ -215,9 +212,6 @@ export default StyleSheet.create({
     topbar: {
         flex: 1,
         height: 50,
-        backgroundColor: '#90EE90',
-        borderBottomColor: '#808080',
-        borderBottomWidth: 3,
         flexDirection:'row',
       },
     
