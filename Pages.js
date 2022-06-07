@@ -3,12 +3,12 @@ import React, { useState } from 'react';
 import {
   Text,
   Image,
+  ImageBackground,
   View,
   ScrollView,
   Pressable,
   Modal,
   TextInput,
-  ImageBackground,
 } from 'react-native';
 
 import {Calendar} from 'react-native-calendars';
@@ -27,31 +27,25 @@ export const HomeScreen = ( { navigation }) => {
     return (
       <View style={{backgroundColor: '#90EE90',flex:1}}>
       <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
-      <ScrollView style={{flex: 1,  paddingBottom:540}}>
-        
-      <View style={styles.topbar}>
-        <Pressable style={styles.backButton} onPress={() => navigation.navigate('Veggie Eaters')}>
-        <FontAwesome name="md-arrow-back" size={25}/>
-        </Pressable>
-      </View>
-  
-  
+
+      <ScrollView style={{flex: 1,  paddingBottom:540, paddingTop: 30}}>
+
       <View style={{width: '100%', justifyContent: 'center', alignItems:'center'}}>
       <Image style={styles.circle} source={require('./assets/beautifulwoman.jpg')} />
       </View>
-  
+
       <View>
       <Text style={styles.paragraph}>
         {Constants.Username}
       </Text>
       </View>
-  
+
       <View style={styles.container_button1}>
         <Pressable style={styles.button} onPress={() => navigation.navigate('Veggie Eaters')}>
           <Text style={styles.text}>Veggie Eaters</Text>
         </Pressable>
       </View>
-      
+
       <View style={styles.container_button2}>
         <Pressable style={styles.button} onPress={() => navigation.navigate('Recipes')}>
           <Text style={styles.text}>Recipes</Text>
@@ -62,14 +56,6 @@ export const HomeScreen = ( { navigation }) => {
       </View>
 
       </ScrollView>
-      <View style={styles.container_icons}>
-          <View style={{width:350}}>
-            <FontAwesome name="md-home" size={30} color='green'/>
-          </View>
-          <View style>
-            <FontAwesome name="md-help-outline" color='green' size={30}/>
-          </View>
-      </View>
       </ImageBackground>
       </View>
     )
@@ -89,19 +75,17 @@ export const VeggieEaters = ( { navigation }) => {
   }
   return (
     <View style={{backgroundColor: '#90EE90',flex:1}}>
-    <ScrollView style={{backgroundColor: '#90EE90', flex: 1, paddingBottom:540}}>
+    <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
+    <ScrollView style={{flex: 1, paddingBottom:540}}>
       
     <View style={styles.topbar}>
       <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
       <FontAwesome name="md-arrow-back" size={25}/>
       </Pressable>
-      <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-      <FontAwesome name="md-person" size={25}/>
-      </Pressable>
     </View>
 
 
-    <View style={{width: '100%', justifyContent: 'center', alignItems:'center', backgroundColor: '#90EE90', borderBottomColor:'#808080', borderBottomWidth:5 }}>
+    <View style={{width: '100%', justifyContent: 'center', alignItems:'center' }}>
     <Text style={styles.textTitle}>Veggie Eaters</Text>
     </View>
 
@@ -123,27 +107,18 @@ export const VeggieEaters = ( { navigation }) => {
       </View>
     </View>
 
-    <View style={styles.container_button1}>
-        <Pressable style={styles.veggieEaterEditButton} onPress={() => navigation.navigate('Veggie Eaters')}>
-          <Text style={styles.text}>Edit</Text>
+    </ScrollView>
+    <View style={{paddingBottom: 50}}>
+        <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+              <FontAwesome name="md-home" size={25}/>
         </Pressable>
     </View>
-    </ScrollView>
-
-    <View style={styles.container_icons}>
-      <View style={{width:350}}>
-        <FontAwesome name="md-home" size={30}/>
-      </View>
-      <View style>
-        <FontAwesome name="md-help-outline" size={30}/>
-      </View>
-    </View>
-
+    </ImageBackground>
     </View>
   )
   }
 
-  export const VeggieEater = ( { navigation }) => {
+export const VeggieEater = ( { navigation }) => {
     const [modalOpen, setModalOpen] = useState(false);
     const [toggleCheckBoxRaw, setToggleCheckBoxRaw] = useState(false);
     const [toggleCheckBoxCooked, setToggleCheckBoxCooked] = useState(false);
@@ -151,28 +126,30 @@ export const VeggieEaters = ( { navigation }) => {
     const [veggieUnits, setUnits] = useState(0);
     const [searchQuery, setSearchQuery] = useState('');
     const [modalRecipeOpen, setModalRecipeOpen] = useState(false);
-    
+
+
     const vegetableImages = {
-      tomato: require('./assets/tomate-1.png'),
-      carrot: require('./assets/carrot.png'),
-      lettuce: require('./assets/lettuce.png'),
-      potato: require('./assets/potato.png'),
-      onion: require('./assets/cebola.png'),
-      eggplant: require('./assets/eggplant.png'),
-      beetroot: require('./assets/beetroot.webp'),
-      broccoli: require('./assets/broccoli.png'),
-      chive: require('./assets/chive.png'),
-      green_cab: require('./assets/green_cab.png'),
-      beans: require('./assets/beans.png'),
-      corn: require('./assets/corn.png'),
-      raddish: require('./assets/radish.png'),
-      kale: require('./assets/kale.png'),
-      cucu: require('./assets/cucu.png'),
-      garlic: require('./assets/garlic.png'),
-      sweetpotato: require('./assets/sweetpotato.png'),
-      pepper: require('./assets/pepper.png'),
-      avocado: require('./assets/avocado.png'),
-      olives: require('./assets/olives.png'),
+        tomato: require('./assets/tomate-1.png'),
+        carrot: require('./assets/carrot.png'),
+        lettuce: require('./assets/lettuce.png'),
+        potato: require('./assets/potato.png'),
+        onion: require('./assets/cebola.png'),
+        eggplant: require('./assets/eggplant.png'),
+        beetroot: require('./assets/beetroot.png'),
+        broccoli: require('./assets/broccoli.png'),
+        chive: require('./assets/chive.png'),
+        green_cab: require('./assets/green_cab.png'),
+        beans: require('./assets/beans.png'),
+        corn: require('./assets/corn.png'),
+        raddish: require('./assets/radish.png'),
+        kale: require('./assets/kale.png'),
+        cucu: require('./assets/cucu.png'),
+        garlic: require('./assets/garlic.png'),
+        sweetpotato: require('./assets/sweetpotato.png'),
+        pepper: require('./assets/pepper.png'),
+        avocado: require('./assets/avocado.png'),
+        olives: require('./assets/olives.png'),
+
     };
 
     const recipeImages = {
@@ -186,53 +163,49 @@ export const VeggieEaters = ( { navigation }) => {
     }
 
     const vegetableNames = {
-      tomato: "Tomato",
-      carrot: "Carrot",
-      lettuce: "Lettuce",
-      potato: "Potato",
-      onion: "Onion",
-      eggplant: "Eggplant",
-      beetroot: "Beetroot",
-      broccoli: 'Broccoli',
-      chive: 'Chive',
-      green_cab: 'Green cabbage',
-      bean: 'Bean',
-      corn: 'Corn',
-      raddish: 'Radish',
-      kale: 'Kale',
-      cucu: 'Cucumber',
-      garlic: 'Garlic',
-      sweetpotato: 'Sweet Potato',
-      peper: 'Pepper',
-      avocado: 'Avocado',
-      olives: 'Olives',
-
+        tomato: "Tomato",
+        carrot: "Carrot",
+        lettuce: "Lettuce",
+        potato: "Potato",
+        onion: "Onion",
+        eggplant: "Eggplant",
+        beetroot: "Beetroot",
+        broccoli: 'Broccoli',
+        chive: 'Chive',
+        green_cab: 'Green cabbage',
+        bean: 'Bean',
+        corn: 'Corn',
+        raddish: 'Radish',
+        kale: 'Kale',
+        cucu: 'Cucumber',
+        garlic: 'Garlic',
+        sweetpotato: 'Sweet Potato',
+        peper: 'Pepper',
+        avocado: 'Avocado',
+        olives: 'Olives',
     };
 
     const vegetables = [
-      {name: vegetableNames.tomato, imagePath: vegetableImages.tomato},
-      {name: vegetableNames.carrot, imagePath: vegetableImages.carrot},
-      {name: vegetableNames.lettuce, imagePath: vegetableImages.lettuce},
-      {name: vegetableNames.potato, imagePath: vegetableImages.potato},
-      {name: vegetableNames.onion, imagePath: vegetableImages.onion},
-      {name: vegetableNames.eggplant, imagePath: vegetableImages.eggplant},
-      {name: vegetableNames.beetroot, imagePath: vegetableImages.beetroot},
-      {name: vegetableNames.broccoli, imagePath: vegetableImages.broccoli},
-      {name: vegetableNames.chive, imagePath: vegetableImages.chive},
-      {name: vegetableNames.green_cab, imagePath: vegetableImages.green_cab},
-      {name: vegetableNames.bean, imagePath: vegetableImages.beans},
-      {name: vegetableNames.corn, imagePath: vegetableImages.corn},
-      {name: vegetableNames.raddish, imagePath: vegetableImages.raddish},
-      {name: vegetableNames.kale, imagePath: vegetableImages.kale},
-      {name: vegetableNames.cucu, imagePath: vegetableImages.cucu},
-      {name: vegetableNames.garlic, imagePath: vegetableImages.garlic},
-      {name: vegetableNames.sweetpotato, imagePath: vegetableImages.sweetpotato},
-      {name: vegetableNames.peper, imagePath: vegetableImages.pepper},
-      {name: vegetableNames.avocado, imagePath: vegetableImages.avocado},
-      {name: vegetableNames.sweetpotato, imagePath: vegetableImages.sweetpotato},
-      {name: vegetableNames.olives, imagePath: vegetableImages.olives},
-
-
+        {name: vegetableNames.tomato, imagePath: vegetableImages.tomato},
+        {name: vegetableNames.carrot, imagePath: vegetableImages.carrot},
+        {name: vegetableNames.lettuce, imagePath: vegetableImages.lettuce},
+        {name: vegetableNames.potato, imagePath: vegetableImages.potato},
+        {name: vegetableNames.onion, imagePath: vegetableImages.onion},
+        {name: vegetableNames.eggplant, imagePath: vegetableImages.eggplant},
+        {name: vegetableNames.beetroot, imagePath: vegetableImages.beetroot},
+        {name: vegetableNames.broccoli, imagePath: vegetableImages.broccoli},
+        {name: vegetableNames.chive, imagePath: vegetableImages.chive},
+        {name: vegetableNames.green_cab, imagePath: vegetableImages.green_cab},
+        {name: vegetableNames.bean, imagePath: vegetableImages.beans},
+        {name: vegetableNames.corn, imagePath: vegetableImages.corn},
+        {name: vegetableNames.raddish, imagePath: vegetableImages.raddish},
+        {name: vegetableNames.kale, imagePath: vegetableImages.kale},
+        {name: vegetableNames.cucu, imagePath: vegetableImages.cucu},
+        {name: vegetableNames.garlic, imagePath: vegetableImages.garlic},
+        {name: vegetableNames.sweetpotato, imagePath: vegetableImages.sweetpotato},
+        {name: vegetableNames.peper, imagePath: vegetableImages.pepper},
+        {name: vegetableNames.avocado, imagePath: vegetableImages.avocado},
+        {name: vegetableNames.olives, imagePath: vegetableImages.olives},
     ];
 
     const recipesFavoritas = [
@@ -243,10 +216,10 @@ export const VeggieEaters = ( { navigation }) => {
     const [selectedVeggies, setSelectedVeggies] = useState(vegetables);
 
     const updateVegetable = (nam, val) => {
-      // Find the item to update and store it in new list 
+      // Find the item to update and store it in new list
       const op = [];
       let eli = list.map((item) => {if(item.name === nam){op.push(1)} return item});
-      
+
       if (op.find(e => e == 1) == undefined){
         list.push({name: nam, value: val});
       }
@@ -271,20 +244,18 @@ export const VeggieEaters = ( { navigation }) => {
       setModalOpen(true);
     }
 
-
-
     const onChangeSearch  = query => {
-      setSearchQuery(query);
-      setSelectedVeggies(vegetables);
+          setSearchQuery(query);
+          setSelectedVeggies(vegetables);
     }
-      
+
 
     const onSearchVeggie = () => {
       let newList = [];
       vegetables.map((item) => {if((item.name.toLowerCase()).includes(searchQuery.toLowerCase())){newList.push(item)}});
       setSelectedVeggies(newList);
     }
-    
+
     const openRecipeModal = () => {
       setModalRecipeOpen(true);
     }
@@ -315,21 +286,20 @@ export const VeggieEaters = ( { navigation }) => {
       setList(newList);
     }
 
+
     return (
       <View style={{backgroundColor: '#90EE90',flex:1}}>
+      <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
         <View style={{height: 10}}></View>
         <View style={styles.topbar}>
           <Pressable style={styles.backButton} onPress={() => navigation.navigate('Veggie Eaters')}>
           <FontAwesome name="md-arrow-back" size={25}/>
           </Pressable>
-          <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-          <FontAwesome name="md-person" size={25}/>
-          </Pressable>
         </View>
-    
+
         <View style={styles.singleVeggieEaterContainerImage}>
           <View style={{alignItems: 'center'}}>
-            <View style={{width: '100%', justifyContent: 'center', alignItems:'center', backgroundColor: '#90EE90'}}>
+            <View style={{width: '100%', justifyContent: 'center', alignItems:'center'}}>
               <Image style={styles.circleVeggie} source={Constants.SelectedVeggieEater.veggieEaterImagePath} />
             </View>
             <Text style={{paddingTop:16, fontSize: 16}}>{Constants.SelectedVeggieEater.name}</Text>
@@ -337,8 +307,8 @@ export const VeggieEaters = ( { navigation }) => {
           <View style={{width:30}}>
           </View>
           <View style={{height: 105, flexShrink:1, borderLeftColor: 'gray', borderLeftWidth: 2, paddingLeft: 10}}>
-            <Text>Daily Progress:</Text>
-          <FlatList data={list} persistentScrollbar={true} renderItem={({item}) => <View style={{flexDirection: 'row'}}><Text style={{fontSize: 15}}> - {item.name + ' ' +  item.value}</Text><Pressable style={{paddingLeft: 25, paddingBottom: 2}} onPress={() => removeItem(item.name)}><FontAwesome name="trash-bin-outline" color={'black'} size={10}/></Pressable></View>}/>
+          <Text>Daily Progress:</Text>
+          <FlatList data={list} persistentScrollbar={true} renderItem={({item}) => <View style={{flexDirection: 'row'}}><Text style={{fontSize: 15}}> - {item.name + ' ' +  item.value}</Text><Pressable style={{paddingLeft: 25, paddingTop: 5}} onPress={() => removeItem(item.name)}><FontAwesome name="trash-bin-outline" color={'black'} size={15}/></Pressable></View>}/>
           </View>
         </View>
 
@@ -369,7 +339,7 @@ export const VeggieEaters = ( { navigation }) => {
         />
         </View>
         </View>
-      </View> 
+      </View>
 
       <Modal visible={modalOpen} transparent={true}>
         <View style={styles.modalContent}>
@@ -383,15 +353,15 @@ export const VeggieEaters = ( { navigation }) => {
               </View>
 
               <View style={{paddingLeft: 20, flexDirection: 'row', paddingTop: 30}}>
-                <Text style={{paddingTop: 20, fontSize: 16, fontWeight: 'bold', paddingRight: 15}}>Quantidade</Text>
+                <Text style={{paddingTop: 20, fontSize: 16, fontWeight: 'bold', paddingRight: 15}}>Quantity</Text>
                 <TextInput
                   style={{height: 40, width: 150,margin: 12, borderWidth: 1, padding: 10, backgroundColor: '#D3D3D3'}}
-                  placeholder="insere unidades"
+                  placeholder="Insert Units"
                   keyboardType="numeric"
                   onChangeText={(text) => setUnits(text)}/>
               </View>
               <View style={{paddingLeft: 20, flexDirection: 'row', paddingTop: 0}}>
-                <Text style={{paddingTop: 20, fontSize: 16, fontWeight: 'bold', paddingRight: 40}}>Estado</Text>
+                <Text style={{paddingTop: 20, fontSize: 16, fontWeight: 'bold', paddingRight: 40}}>State</Text>
                 <View style={{flexDirection: 'row', paddingTop: 18}}>
                   <Text style={{paddingTop: 5}}>Raw</Text>
                   <CheckBox disabled={false} value={toggleCheckBoxRaw} onValueChange={(newValue) => setToggleCheckBoxRaw(newValue)} tintColors={{ true: 'white' }}/>
@@ -416,7 +386,7 @@ export const VeggieEaters = ( { navigation }) => {
               <View style={{alignItems: 'center'}}>
                 <Text style={{color: 'white', fontSize: 20}}>Favourite Recipes</Text>
               </View>
-              <View style={{borderWidth: 2, borderColor: 'gray', width: 300, height: 300}}>
+              <View style={{width: 300, height: 300}}>
                 <FlatList data={recipesFavoritas} persistentScrollbar={true} renderItem={({item}) => <View style={{paddingTop: 15}}>
                 <View style={{flexDirection: 'row', paddingLeft: 20}}>
                   <Image style={styles.recipeImage} source={item.imagePath} />
@@ -442,12 +412,12 @@ export const VeggieEaters = ( { navigation }) => {
 
       <View style={styles.container_icons_singleVeggie}>
         <View style={{width:350}}>
-          <FontAwesome name="md-home" size={30}/>
-        </View>
-        <View style>
-          <FontAwesome name="md-help-outline" size={30}/>
+           <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+               <FontAwesome name="md-home" size={25}/>
+           </Pressable>
         </View>
       </View>
+      </ImageBackground>
       </View>
     )
   
@@ -458,7 +428,7 @@ export const Recipes = ( { navigation }) => {
   const [searchQuery, setSearchQuery] = useState('');
   const [buttonName, setButtonName] = useState('md-heart-outline');
   const [selectQuery, setSelectQuery] = useState('');
-  const filters = ["All", "Most Recent", "Most Popular", "Most Rated", "Favourites"]
+  const filters = ["All", "Most Recent", "Most Popular", "Most Rated"]
 
   const recipeTitles = {
     pipis: 'Pipis in spicy broth',
@@ -490,8 +460,12 @@ export const Recipes = ( { navigation }) => {
   }
 
   const RecipesList = [MainList.pipis, MainList.green_noodes, MainList.sesame_beef];
-  
+
   const MostRecentList = [MainList.sesame_beef, MainList.green_noodes, MainList.pipis];
+
+  const MostPopularList = [MainList.green_noodes, MainList.pipis, MainList.pipis];
+
+  const FavouritesList = [MainList.pipis];
 
   const [list, setList] = useState(RecipesList);
 
@@ -500,7 +474,6 @@ export const Recipes = ( { navigation }) => {
     Constants.SelectedRecipe.recipeImagePath = recipeImagePath;
     Constants.SelectedRecipe.recipeContent = recipeContent;
     Constants.SelectedRecipe.buttonName = buttonNam;
-    console.log("On Modal..." + recipeName + "-> " + buttonNam);
     setButtonName(buttonNam);
     setModalOpen(true);
   }
@@ -515,10 +488,19 @@ export const Recipes = ( { navigation }) => {
       case 'All':
         setList(RecipesList);
         break;
-      
+
       case 'Most Recent':
         setList(MostRecentList);
         break;
+
+      case 'Most Popular':
+        setList(MostPopularList);
+        break;
+
+      case 'Most Rated':
+        setList(RecipesList);
+        break;
+
     }
   }
 
@@ -530,25 +512,25 @@ export const Recipes = ( { navigation }) => {
 
 
   const toFavourites = () => {
-    
+
     if (Constants.SelectedRecipe.buttonName=="md-heart"){
       switch(Constants.SelectedRecipe.recipeName){
         case MainList.pipis.recipeName:
           MainList.pipis.favorite = "md-heart-outline";
-          console.log("off pipis");
           openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, MainList.pipis.favorite)
           break;
         case MainList.green_noodes.recipeName:
+          FavouritesList.splice(FavouritesList.indexOf(MainList.green_noodes), 1);
           MainList.green_noodes.favorite = "md-heart-outline";
-          console.log("off green");
           openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart-outline")
           break;
         case MainList.sesame_beef.recipeName:
+          FavouritesList.splice(FavouritesList.indexOf(MainList.sesame_beef), 1);
           MainList.sesame_beef.favorite = "md-heart-outline";
           openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart-outline")
           break;
       }
-      
+
     }
     else if (Constants.SelectedRecipe.buttonName=="md-heart-outline"){
       switch(Constants.SelectedRecipe.recipeName){
@@ -556,20 +538,23 @@ export const Recipes = ( { navigation }) => {
           MainList.pipis.favorite = "md-heart";
           console.log("on pipis");
           openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, MainList.pipis.favorite)
+          FavouritesList.push(MainList.pipis);
           break;
         case MainList.green_noodes.recipeName:
           MainList.green_noodes.favorite = "md-heart";
           console.log("on green");
           openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart")
+          FavouritesList.push(MainList.green_noodes);
           break;
         case MainList.sesame_beef.recipeName:
           MainList.sesame_beef.favorite = "md-heart";
           openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart")
+          FavouritesList.push(MainList.sesame_beef);
           break;
       }
-      
-    } 
-    
+
+    }
+
   }
 
   const modalClose = () => {
@@ -586,21 +571,16 @@ export const Recipes = ( { navigation }) => {
 
   return (
     <View style={{backgroundColor: '#90EE90',flex:1}}>
-        
+    <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
         <View style={styles.topbar}>
           <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
             <FontAwesome name="md-arrow-back" size={25}/>
           </Pressable>
-          <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-            <FontAwesome name="md-person" size={25}/>
-          </Pressable>
         </View>
-  
-  
-        <View style={{width: '100%', justifyContent: 'center', alignItems:'center', backgroundColor: '#90EE90', borderBottomColor:'#808080', borderBottomWidth:5 }}>
+        <View style={{width: '100%', justifyContent: 'center', alignItems:'center'}}>
           <Text style={styles.textTitle}>Recipes</Text>
         </View>
-  
+
         <View style={{flexDirection: 'row', paddingTop: 6}}>
           <View style={styles.searchBarContainer}>
             <View>
@@ -662,21 +642,21 @@ export const Recipes = ( { navigation }) => {
                   <Text>
                     {Constants.SelectedRecipe.recipeContent}
                   </Text>
-                </View>  
+                </View>
               </ScrollView>
             </View>
         </View>
       </Modal>
 
       <View style={styles.container_icons}>
-        <View style={{width:350}}>
+        <View style={{width:350, paddingLeft: 20}}>
+          <Pressable onPress={() => navigation.navigate('Home')}>
           <FontAwesome name="md-home" size={30}/>
-        </View>
-        <View style>
-          <FontAwesome name="md-help-outline" size={30}/>
+          </Pressable>
         </View>
       </View>
-  
+
+    </ImageBackground>
     </View>
   )
 }

@@ -7,11 +7,11 @@ export default StyleSheet.create({
         height: 100,
     },
 
-    list: {
-      justifyContent: 'center',
-      flexDirection: 'column',
+    background: {
+        justifyContent: "center",
+        width: '100%',
+        height: '100%',
     },
-
 
     recipeImage: {
       width: 100,
@@ -54,7 +54,7 @@ export default StyleSheet.create({
     innerModal: {
       width: 300, 
       height: 380, 
-      backgroundColor: 'grey',
+      backgroundColor: '#50D463',
       borderColor: '#007500',
       borderWidth: 3,
     },
@@ -92,7 +92,6 @@ export default StyleSheet.create({
       backgroundColor: 'white',
       width: 75,
       height: 75,
-      paddingRight: 0
   },
 
     container_VeggieEaterPageButtons: {
@@ -210,8 +209,8 @@ export default StyleSheet.create({
     },
     
     topbar: {
+        paddingTop: 10,
         flex: 1,
-        height: 50,
         flexDirection:'row',
       },
     
@@ -230,23 +229,29 @@ export default StyleSheet.create({
     container_calendar: {
         flex: 1,
         paddingTop: 50,
+        paddingBottom: 50,
         justifyContent: 'center',
         alignItems: "center",
       },
     
     container_icons: {
         flex: 1,
-        paddingTop: 50,
-        flexDirection:'row',
+        justifyContent: 'flex-end',
+        paddingTop: 20,
+        paddingBottom: 30,
+        flexDirection:'column',
       },
 
     container_icons_singleVeggie: {
         flex: 1,
-        paddingTop: 10,
-        flexDirection:'row',
+        justifyContent: 'flex-end',
+        paddingTop: 20,
+        paddingBottom: 30,
+        flexDirection:'column',
       },  
     
     paragraph: {
+        color: 'black',
         margin: 16,
         fontSize: 18,
         fontWeight: 'bold',
