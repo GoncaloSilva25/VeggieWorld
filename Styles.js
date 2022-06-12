@@ -54,7 +54,7 @@ export default StyleSheet.create({
     innerModal: {
       width: 300, 
       height: 380, 
-      backgroundColor: '#50D463',
+      backgroundColor: '´rgba(255, 255, 255, 0.9)',
       borderColor: '#007500',
       borderWidth: 3,
     },
@@ -89,7 +89,7 @@ export default StyleSheet.create({
     veggetableButton: {
       alignItems: 'center',
       justifyContent: 'center',
-      backgroundColor: 'white',
+      transparent: true,
       width: 75,
       height: 75,
   },
@@ -131,11 +131,15 @@ export default StyleSheet.create({
     },
 
     singleVeggieEaterContainerImage: {
-      flex: 1,
+      height: 150,
       flexDirection:'row',
       alignItems: 'center',
       paddingLeft:30,
-      paddingTop: 48,
+      paddingBottom:0,
+      backgroundColor: 'rgba(255, 255, 255, 0.46)',
+      borderColor: 'rgba(255, 255, 255, 0.26)',
+      borderWidth: 1,
+      borderRadius: 10
     },
 
     veggieEaterEditButton: {
@@ -181,9 +185,26 @@ export default StyleSheet.create({
         width: 175,
       },
 
+    buttonAddRecipe: {
+        alignItems: 'center',
+        justifyContent: 'center',
+        paddingVertical: 6,
+        paddingHorizontal: 32,
+        borderRadius: 4,
+        elevation: 3,
+        backgroundColor: '#007500',
+        width: 175,
+      },
+
     backButton: {
         paddingHorizontal: 21,
         width: 325,
+      },
+    
+    homeButton: {
+        width: 325,
+        paddingBottom: 5,
+        paddingLeft: 5
       },
 
     backTextButton: {
@@ -210,8 +231,6 @@ export default StyleSheet.create({
     
     topbar: {
         paddingTop: 10,
-        flex: 1,
-        flexDirection:'row',
       },
     
     container_button1: {
@@ -245,9 +264,8 @@ export default StyleSheet.create({
     container_icons_singleVeggie: {
         flex: 1,
         justifyContent: 'flex-end',
-        paddingTop: 20,
-        paddingBottom: 30,
         flexDirection:'column',
+        backgroundColor: 'rgba(255, 255, 255, 0.5)'
       },  
     
     paragraph: {

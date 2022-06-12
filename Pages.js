@@ -11,21 +11,21 @@ import {
   TextInput,
 } from 'react-native';
 
-import {Calendar} from 'react-native-calendars';
 import FontAwesome from 'react-native-vector-icons/Ionicons';
-import CheckBox from '@react-native-community/checkbox';
 import styles from './Styles';
 import * as Constants from './Constants';
 
-import { Searchbar } from 'react-native-paper';
+//import { Searchbar } from 'react-native-paper';
+import SearchBar from "react-native-dynamic-search-bar";
 import { FlatList } from 'react-native-gesture-handler';
 import FlashMessage from 'react-native-flash-message';
 import  {showMessage, hideMessage} from "react-native-flash-message";
 import SelectDropdown from 'react-native-select-dropdown';
+import RadioGroup from 'react-native-radio-buttons-group';
 
 export const HomeScreen = ( { navigation }) => {
     return (
-      <View style={{backgroundColor: '#90EE90',flex:1}}>
+      <View style={{backgroundColor: '#FFFFFF',flex:1}}>
       <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
 
       <ScrollView style={{flex: 1,  paddingBottom:540, paddingTop: 30}}>
@@ -51,10 +51,6 @@ export const HomeScreen = ( { navigation }) => {
           <Text style={styles.text}>Recipes</Text>
         </Pressable>
       </View>
-      <View style={styles.container_calendar}>
-        <Calendar style={{flex: 1}}/>
-      </View>
-
       </ScrollView>
       </ImageBackground>
       </View>
@@ -74,7 +70,7 @@ export const VeggieEaters = ( { navigation }) => {
     navigation.navigate('Veggie Eater');
   }
   return (
-    <View style={{backgroundColor: '#90EE90',flex:1}}>
+    <View style={{backgroundColor: '#FFFFFF',flex:1}}>
     <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
     <ScrollView style={{flex: 1, paddingBottom:540}}>
       
@@ -120,11 +116,8 @@ export const VeggieEaters = ( { navigation }) => {
 
 export const VeggieEater = ( { navigation }) => {
     const [modalOpen, setModalOpen] = useState(false);
-    const [toggleCheckBoxRaw, setToggleCheckBoxRaw] = useState(false);
-    const [toggleCheckBoxCooked, setToggleCheckBoxCooked] = useState(false);
     const [list, setList] = useState(Constants.SelectedVeggieEater.VegetableList);
     const [veggieUnits, setUnits] = useState(0);
-    const [searchQuery, setSearchQuery] = useState('');
     const [modalRecipeOpen, setModalRecipeOpen] = useState(false);
 
 
@@ -151,16 +144,6 @@ export const VeggieEater = ( { navigation }) => {
         olives: require('./assets/olives.png'),
 
     };
-
-    const recipeImages = {
-      pipis: require('./assets/recipe1.jpeg'),
-      green_noodes: require('./assets/recipe2.jpeg'),
-    };
-
-    const recipeIngredients = {
-      pipis: [{name: "Eschalot", quantity: 4}, {name: "Garlic", quantity: 4}, {name: "Tomato", quantity: 5}, ],
-      green_noodes: [{name: "Shallot", quantity: 3}, {name: "Lemongrass", quantity: 1}, {name: "Chilli", quantity: 5}],
-    }
 
     const vegetableNames = {
         tomato: "Tomato",
@@ -208,11 +191,6 @@ export const VeggieEater = ( { navigation }) => {
         {name: vegetableNames.olives, imagePath: vegetableImages.olives},
     ];
 
-    const recipesFavoritas = [
-      {name: 'Pipis in spicy broth', imagePath: recipeImages.pipis},
-      {name: 'Green Tea Noodles with sticky', imagePath: recipeImages.green_noodes},
-    ];
-
     const [selectedVeggies, setSelectedVeggies] = useState(vegetables);
 
     const updateVegetable = (nam, val) => {
@@ -244,30 +222,17 @@ export const VeggieEater = ( { navigation }) => {
       setModalOpen(true);
     }
 
-    const onChangeSearch  = query => {
-          setSearchQuery(query);
-          setSelectedVeggies(vegetables);
-    }
-
-
-    const onSearchVeggie = () => {
+    const onSearchVeggie = (veggie) => {
       let newList = [];
-      vegetables.map((item) => {if((item.name.toLowerCase()).includes(searchQuery.toLowerCase())){newList.push(item)}});
+      vegetables.map((item) => {if((item.name.toLowerCase()).includes(veggie.toLowerCase())){newList.push(item)}});
       setSelectedVeggies(newList);
     }
 
     const openRecipeModal = () => {
       setModalRecipeOpen(true);
     }
-    const addRecipe = (recipeName) => {
-      switch(recipeName){
-        case "Pipis in spicy broth":
-          recipeIngredients.pipis.map((item) => {addVegetable(item.name, item.quantity)});
-          break;
-        case "Green Tea Noodles with sticky":
-          recipeIngredients.green_noodes.map((item) => {addVegetable(item.name, item.quantity)});
-          break;
-      }
+    const addRecipe = (recipe) => {
+      recipe.recipeIngredients.map((item) => {addVegetable(item.name, item.quantity)});
       setModalRecipeOpen(false);
     }
 
@@ -286,11 +251,26 @@ export const VeggieEater = ( { navigation }) => {
       setList(newList);
     }
 
+    const radioButtonsData = [{
+      id: '1', // acts as primary key, should be unique and non-empty string
+      label: 'Raw',
+      value: 'raw'
+    }, {
+      id: '2',
+      label: 'Cooked',
+      value: 'cooked'
+    }]
+
+    const [radioButtons, setRadioButtons] = useState(radioButtonsData)
+
+    const onPressRadioButton = (radioButtonsArray) => {
+      setRadioButtons(radioButtonsArray);
+    }
+
 
     return (
-      <View style={{backgroundColor: '#90EE90',flex:1}}>
+      <View style={{backgroundColor: '#FFFFFF',flex:1}}>
       <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
-        <View style={{height: 10}}></View>
         <View style={styles.topbar}>
           <Pressable style={styles.backButton} onPress={() => navigation.navigate('Veggie Eaters')}>
           <FontAwesome name="md-arrow-back" size={25}/>
@@ -302,39 +282,44 @@ export const VeggieEater = ( { navigation }) => {
             <View style={{width: '100%', justifyContent: 'center', alignItems:'center'}}>
               <Image style={styles.circleVeggie} source={Constants.SelectedVeggieEater.veggieEaterImagePath} />
             </View>
-            <Text style={{paddingTop:16, fontSize: 16}}>{Constants.SelectedVeggieEater.name}</Text>
+            <Text style={{paddingTop:16, fontSize: 18, color: 'black'}}>{Constants.SelectedVeggieEater.name}</Text>
           </View>
           <View style={{width:30}}>
           </View>
           <View style={{height: 105, flexShrink:1, borderLeftColor: 'gray', borderLeftWidth: 2, paddingLeft: 10}}>
-          <Text>Daily Progress:</Text>
-          <FlatList data={list} persistentScrollbar={true} renderItem={({item}) => <View style={{flexDirection: 'row'}}><Text style={{fontSize: 15}}> - {item.name + ' ' +  item.value}</Text><Pressable style={{paddingLeft: 25, paddingTop: 5}} onPress={() => removeItem(item.name)}><FontAwesome name="trash-bin-outline" color={'black'} size={15}/></Pressable></View>}/>
+          <Text style={{fontSize: 16, color: 'black'}}>Daily Progress:</Text>
+          <FlatList data={list} persistentScrollbar={true} renderItem={({item}) => <View style={{flexDirection: 'row'}}><Text style={{fontSize: 15, color: 'black'}}> - {item.name + ' ' +  item.value}</Text><Pressable style={{paddingLeft: 25}} onPress={() => removeItem(item.name)}><FontAwesome name="trash-bin-outline" color={'black'} size={22}/></Pressable></View>}/>
           </View>
         </View>
+        
 
+        <View>
         <View style={{flexDirection: 'row', paddingTop: 6}}>
           <View style={styles.searchBarContainer}>
             <View>
-              <Text style={{paddingBottom: 2, paddingTop: 25}}>Search for vegetable</Text>
+              <Text style={{paddingBottom: 2, fontSize: 16, paddingLeft: 5, fontWeight: 'bold', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.22)', width: 165, borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.22)' }}>Search for vegetable</Text>
             </View>
-            <Searchbar containerStyle={styles.searchBarContainer} placeholder="Vegetable"
-            inputStyle={{fontSize: 16}} onIconPress={onSearchVeggie} onChangeText={onChangeSearch} value={searchQuery}/>
+            <View style={{paddingLeft: 140}}>
+            <SearchBar style={{width: 350, height: 50, borderColor: 'rgba(0, 0, 0, 0.12)', borderWidth: 1}} placeholder="Search here" fontSize={16} onChangeText={(text) => onSearchVeggie(text)} onClearPress={() => onSearchVeggie("")} />
+            </View>
           </View>
-          <View style={styles.container_VeggieEaterPageButtons}>
-              <Pressable style={styles.veggieEaterPageButtons} onPress={() => onSearchVeggie()}>
-                <Text style={styles.text}>Search</Text>
-              </Pressable>
+          <View>
           </View>
         </View>
-        <View style={{paddingTop: 15, height: 240}}>
-        <Text style={{paddingLeft: 48, paddingBottom: 5}}>Pick a vegetable:</Text>
+
+        <View style={{paddingTop: 25, height: 240}}>
         <View style={{alignItems: 'center'}}>
-        <View style={{borderWidth: 2, borderColor: 'gray', width: 300, backgroundColor:'white', alignItems:'center', height: 200}}>
-        <FlatList data={selectedVeggies} persistentScrollbar={true} numColumns={3} contentContainerStyle={styles.list} renderItem={({item}) => <View style={{width:76, alignItems:'center'}}>
+        <Text style={{paddingBottom: 10, fontSize: 18}}>Pick a vegetable</Text>
+        </View>
+        <View>
+        <View style={{borderWidth: 1, borderColor: 'rgba(0, 0, 0, 0.12)', width: '100%', transparent: true, backgroundColor: 'rgba(80, 80, 80, 0.22)' ,height: 225, borderColor: 'rgba(80, 80, 80, 0.22)', borderWidth: 1, borderRadius: 20, paddingLeft: 10 }}>
+        <FlatList data={selectedVeggies} persistentScrollbar={true} numColumns={4} style={{paddingTop: 10}} renderItem={({item}) => <View style={{width:90, alignItems:'center'}}>
               <Pressable style={styles.veggetableButton} onPress={() => openModalVegetable(item.name, item.imagePath)}>
                 <Image style={styles.veggetableImages} source={item.imagePath} />
               </Pressable>
-              <Text>{item.name}</Text>
+              <View>
+              <Text style={{fontSize: 16, fontWeight: 'bold', color: 'white'}}>{item.name}</Text>
+              </View>
             </View>}
         />
         </View>
@@ -353,21 +338,16 @@ export const VeggieEater = ( { navigation }) => {
               </View>
 
               <View style={{paddingLeft: 20, flexDirection: 'row', paddingTop: 30}}>
-                <Text style={{paddingTop: 20, fontSize: 16, fontWeight: 'bold', paddingRight: 15}}>Quantity</Text>
+                <Text style={{paddingTop: 20, fontSize: 16, fontWeight: 'bold', paddingRight: 15}}>Weight</Text>
                 <TextInput
                   style={{height: 40, width: 150,margin: 12, borderWidth: 1, padding: 10, backgroundColor: '#D3D3D3'}}
-                  placeholder="Insert Units"
+                  placeholder="Insert weight"
                   keyboardType="numeric"
                   onChangeText={(text) => setUnits(text)}/>
               </View>
               <View style={{paddingLeft: 20, flexDirection: 'row', paddingTop: 0}}>
                 <Text style={{paddingTop: 20, fontSize: 16, fontWeight: 'bold', paddingRight: 40}}>State</Text>
-                <View style={{flexDirection: 'row', paddingTop: 18}}>
-                  <Text style={{paddingTop: 5}}>Raw</Text>
-                  <CheckBox disabled={false} value={toggleCheckBoxRaw} onValueChange={(newValue) => setToggleCheckBoxRaw(newValue)} tintColors={{ true: 'white' }}/>
-                  <Text style={{paddingTop: 5, paddingLeft: 25}}>Cooked</Text>
-                  <CheckBox disabled={false} value={toggleCheckBoxCooked} onValueChange={(newValue) => setToggleCheckBoxCooked(newValue)} tintColors={{ true: 'white' }}/>
-                </View>
+                <RadioGroup radioButtons={radioButtons} containerStyle={{flexDirection: 'row', paddingTop: 18}} onPress={onPressRadioButton}/>
               </View>
               <View style={{paddingTop:30, paddingLeft: 90}}>
                 <Pressable style={styles.buttonAddVegetable} onPress={() => addVegetable(Constants.SelectedVegetable.vegetableName,veggieUnits)}>
@@ -384,15 +364,15 @@ export const VeggieEater = ( { navigation }) => {
                 <FontAwesome name="md-close" size={25}/>
               </Pressable>
               <View style={{alignItems: 'center'}}>
-                <Text style={{color: 'white', fontSize: 20}}>Favourite Recipes</Text>
+                <Text style={{color: 'black', fontSize: 20}}>Favourite Recipes</Text>
               </View>
               <View style={{width: 300, height: 300}}>
-                <FlatList data={recipesFavoritas} persistentScrollbar={true} renderItem={({item}) => <View style={{paddingTop: 15}}>
+                <FlatList data={Constants.FavouriteRecipes} persistentScrollbar={true} renderItem={({item}) => <View style={{paddingTop: 15}}>
                 <View style={{flexDirection: 'row', paddingLeft: 20}}>
-                  <Image style={styles.recipeImage} source={item.imagePath} />
-                  <Text style={{width: 130,paddingLeft: 5, color: 'white'}}>{item.name}</Text>
-                  <Pressable style={{paddingTop: 40}} onPress={() => addRecipe(item.name)}>
-                    <FontAwesome name="md-add-circle-outline" size={25}/>
+                  <Image style={styles.recipeImage} source={item.recipeImagePath} />
+                  <Text style={{width: 130,paddingLeft: 5, color: 'black'}}>{item.recipeName}</Text>
+                  <Pressable style={{paddingTop: 40}} onPress={() => addRecipe(item)}>
+                    <FontAwesome name="md-add-circle-outline" size={30}/>
                   </Pressable>
                 </View>
             </View>}
@@ -401,18 +381,19 @@ export const VeggieEater = ( { navigation }) => {
             </View>
         </View>
       </Modal>
-      <FlashMessage position="center" titleStyle={{fontSize: 16}}/>
+      <FlashMessage position="bottom" titleStyle={{fontSize: 16}}/>
 
       <View style={styles.container_button1}>
-        <Text style={{paddingBottom: 20, fontSize: 14, fontWeight: 'bold'}}>OR</Text>
-        <Pressable style={styles.button} onPress={() => openRecipeModal()}>
+        <Text style={{paddingBottom: 20, fontSize: 18, fontWeight: 'bold', paddingTop: 30}}>OR</Text>
+        <Pressable style={styles.buttonAddRecipe} onPress={() => openRecipeModal()}>
           <Text style={styles.text}>Add Recipe</Text>
         </Pressable>
       </View>
-
+      </View>
+      <View style={{height: 35}}></View>
       <View style={styles.container_icons_singleVeggie}>
         <View style={{width:350}}>
-           <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+           <Pressable style={styles.homeButton} onPress={() => navigation.navigate('Home')}>
                <FontAwesome name="md-home" size={25}/>
            </Pressable>
         </View>
@@ -425,62 +406,84 @@ export const VeggieEater = ( { navigation }) => {
 
 export const Recipes = ( { navigation }) => {
   const [modalOpen, setModalOpen] = useState(false);
-  const [searchQuery, setSearchQuery] = useState('');
   const [buttonName, setButtonName] = useState('md-heart-outline');
-  const [selectQuery, setSelectQuery] = useState('');
-  const filters = ["All", "Most Recent", "Most Popular", "Most Rated"]
+  const [favPipis, setFavPipis] = useState(Constants.favPipis);
+  const [favGreen, setFavGreen] = useState(Constants.favGreen);
+  const [favSesame, setFavSesame] = useState(Constants.favSesame);
+  const [favSilver, setFavSilver] = useState(Constants.favSilver);
+  const filters = ["All", "Most Recent", "Most Popular", "Most Rated", "Favourite Recipes"]
 
   const recipeTitles = {
     pipis: 'Pipis in spicy broth',
     green_noodes: 'Green Tea Noodles with sicky salmon',
     sesame_beef: 'Sesame beef with gochujang udon noodles',
+    silver: "Silverbeet fatteh with sumac yoghurt and chickpeas"
   }
   const recipeImages = {
     pipis: require('./assets/recipe1.jpeg'),
     green_noodles: require('./assets/recipe2.jpeg'),
-    sesame_beef: require('./assets/recipe3.jpeg')
+    sesame_beef: require('./assets/recipe3.jpeg'),
+    silver: require('./assets/recipe4.jpeg'),
   }
 
   const recipesDescriptions = {
     pipis: 'Pipis in spicy broth\n\nMake the most of tomatoes with this summer pipi dish.',
     green_noodes: 'Green Tea Noddles with sticky salmon\n\nBring a pop of colour to this easy midweek dinner.',
     sesame_beef: 'Sesame beef with gochujang udon noodles\n\nMove over 2-minute noodles, this beef and udon dish will make your evening.',
+    silver: 'Try this dish with roast cauliflower, eggplant or roast pumpkin instead of silverbeet for a variation, says Tom Walton. Begin this recipe 1 day ahead.'
   }
 
   const recipesContent = {
     pipis: "Ingredients:\n - 1/3 cup (80ml) vegetable oil\n - 4 eschalots, thinly sliced\n - 4 garlic cloves, thinly sliced\n - 1 lemongrass stalk, halved and bruised\n - 2 kaffir lime leaves\n - 5cm piece (25g) ginger, thinly sliced\n - 5cm piece (25g) galangal, finely grated\n - 1/2 bunch coriander, stems finely chopped, leaves picked and finely chopped\n - 1 long red chilli, finely chopped, plus extra to serve\n - 2 tbs fish sauce\n - 2 tbs sambal oelek\n - 500g ripe tomatoes, finely chopped\n - 200g grape tomatoes\n - 1kg pot-ready pipis, purged\n - Lime wedges, to serve \n\nMethod:\n1. Heat oil in a wok over high heat. Add eschalot, garlic, lemongrass, lime leaves, ginger, galangal, coriander stems and chilli, and cook for 5-6 minutes or until caramelised and fragrant. Add fish sauce, sambal oelek and tomatoes, and cook for 6-8 minutes until softened and juicy. Add the pipis, cover with a lid and cook for 6-7 minutes until the pipis have opened. Discard any unopened pipis. Serve topped with extra chilli, coriander leaves and lime wedges.",
     green_noodles: "Ingredients:\n - 1/2 cup (125ml) peanut oil\n - 1 tbs finely chopped ginger\n - 3 long green shallots, thinly sliced\n - 1 lemongrass stalk (white part only), finely grated\n - 1 1/2 tbs runny honey\n - 2 tbs extra virgin olive oil\n - 80g chilli paste in soybean oil\n - 600g whole skinless salmon fillet, pin-boned\n - 240g packet dried green tea noodles\n - 1/3 cup (80ml) lime juice\n - 2 1/2 tsp caster sugar\n - 2 tsp fish sauce\n - 1/2 tsp chilli flakes, plus extra to serve\n\nMethod:\n1. Preheat oven to 220°C. Heat peanut oil in a small saucepan over low heat. Add ginger, long green shallot, lemongrass and a pinch of salt. Cook, stirring occasionally, for 6-8 minutes until long green shallot is very soft but not coloured. Remove from heat and cool.\n2. Meanwhile, combine honey, olive oil and chilli paste in a bowl. Stir to combine. Line a baking tray with baking paper and add salmon. Rub honey mixture over salmon to coat, then season. Roast for 12-15 minutes for medium. Set aside, loosely covered with foil, to rest for 5 minutes.\n3. Cook noodles according to packet instructions. Drain and rinse briefly with warm water.\n4. Whisk lime juice, sugar, fish sauce and chilli flakes into the shallot oil mixture. Place noodles in a large bowl with three quarters of the shallot oil, season and toss to combine. Arrange on a serving platter and flake salmon over the top. Drizzle over remaining shallot oil and scatter with extra chilli flakes, toasted sesame seeds and shiso leaves. Serve at room temperature or chilled.",
     sesame_beef: "Ingredients:\n - 400g skirt beef steak\n - 2 tsp sesame oil\n - 400g udon noodles\n - 50g unsalted butter, chopped\n - 150g mixed Asian mushrooms, sliced\n - 1/4 cup gochujang (Korean fermented chilli paste)\n - 1 tbs tomato sauce\n - 120g baby spinach leaves\n - 1 bunch broccolini, cut in half on the diagonal, blanched\n - Chopped nori & toasted sesame seeds, to serve\n\nMethod:\n1. Place the skirt steak on a large oven tray, season with salt flakes and drizzle with the sesame oil. Leave steak to stand at room temperature for 30 minutes or until the fridge chill has gone.\n2.Cook the udon noodles according to packet instructions, reserving 1 cup (250ml) of noodle water.\n3.Heat a lightly greased barbecue or chargrill pan over high heat. Grill the steak for 3-4 minutes on each side until cooked to your liking. Remove from the heat and rest, loosely covered with foil, for 10-12 minutes.\n4.Meanwhile, heat half the butter in a large non-stick frypan over medium-high heat. Add the mushroom and cook for 2-3 minutes until golden. Remove and set aside. Add the gochujang and tomato sauce to the pan and cook, stirring, for 1-2 minutes until the gochujang is lightly caramelised. Add the noodle water and bring to a simmer, cooking for 2-3 minutes until the liquid is slightly reduced.\n5.Add the noodles, spinach and remaining butter, and stir until spinach is wilted and noodles are coated in the sauce.\n6.Divide noodles among serving plates, top with sliced steak, broccolini, mushroom and nori. Sprinkle with sesame seeds to serve.",
+    silver: "Ingredientes:\n - 2 cups (400g) dried chickpeas, soaked overnight\n - 3 large pieces Lebanese bread, cut into 4 large triangles\n - 1/4 cup (60ml) extra virgin olive oil, plus extra to drizzle\n - 1/2 bunch silverbeet, stalks removed\n - 1 cup each mint leaves & flat-leaf parsley leaves, roughly chopped\n\nMethod:\n1. Place chickpeas in a medium saucepan and cover with cold water. Bring to the boil over high heat, reduce to medium and simmer for 40-45 minutes until cooked. Keep warm.\n2. Preheat oven to 180°C. Place Lebanese bread on a baking tray, drizzle with olive oil and sprinkle with extra za’atar. Bake for 10-12 minutes until golden and crisp.\n3. For the yoghurt dressing, place yoghurt, za’atar, garlic, sumac and lemon in a bowl. Season to taste and mix to combine.\n4. For the pomegranate dressing, place all the ingredients in a bowl, season to taste and stir to combine.\n5. Preheat a chargrill pan or barbecue to high. Drizzle silverbeet with extra oil, season and chargrill for 4-5 minutes until wilted and a little charred. Roughly chop and place in a bowl with chickpeas and herbs. Drizzle over pomegranate dressing, season and toss to combine.\n6. Place pita on a serving plate, spoon over yoghurt dressing and layer with silverbeet salad. Scatter over pine nuts and smoked trout to serve."
+  }
+
+  const recipesIngredients = {
+    pipis: [{name: "Eschalot", quantity: 4}, {name: "Garlic", quantity: 4}, {name: "Tomato", quantity: 5}],
+    green_noodes: [{name: "Shallot", quantity: 3}, {name: "Lemongrass", quantity: 1}, {name: "Chilli", quantity: 5}],
+    sesame_beef: [{name: "Sesame Oil", quantity: 2}, {name: "Udon Noodles", quantity: 400}, {name: "Asian mushrooms", quantity: 150}, {name: "Gochujang", quantity: 0.25}, {name: "Tomato Sauce", quantity: 1}, {name: "Baby Spinach", quantity: 120}, {name: "Broccolini", quantity: 1}, {name: "Sesame Seeds", quantity: 10}],
+    silver: [{name: "Chickpeas", quantity: 400}, {name: "Virgin Oil", quantity: 60}, {name: "Silverbeet", quantity: 200}, {name: "Mint leaves", quantity: 10}]
   }
 
   const MainList = {
-    pipis: {recipeName: recipeTitles.pipis, recipeImagePath: recipeImages.pipis, recipeDescription: recipesDescriptions.pipis, recipeContent: recipesContent.pipis, favorite: 'md-heart-outline' },
-    green_noodes: {recipeName: recipeTitles.green_noodes, recipeImagePath: recipeImages.green_noodles, recipeDescription: recipesDescriptions.green_noodes, recipeContent: recipesContent.green_noodles, favorite: 'md-heart-outline'},
-    sesame_beef: {recipeName: recipeTitles.sesame_beef, recipeImagePath: recipeImages.sesame_beef, recipeDescription: recipesDescriptions.sesame_beef, recipeContent: recipesContent.sesame_beef, favorite: 'md-heart-outline'},
+    pipis: {recipeNumber: 1, recipeName: recipeTitles.pipis, recipeImagePath: recipeImages.pipis, recipeDescription: recipesDescriptions.pipis, recipeContent: recipesContent.pipis, recipeIngredients: recipesIngredients.pipis},
+    green_noodes: {recipeNumber: 2, recipeName: recipeTitles.green_noodes, recipeImagePath: recipeImages.green_noodles, recipeDescription: recipesDescriptions.green_noodes, recipeContent: recipesContent.green_noodles, recipeIngredients: recipesIngredients.green_noodes},
+    sesame_beef: {recipeNumber: 3, recipeName: recipeTitles.sesame_beef, recipeImagePath: recipeImages.sesame_beef, recipeDescription: recipesDescriptions.sesame_beef, recipeContent: recipesContent.sesame_beef, recipeIngredients: recipesIngredients.sesame_beef},
+    silver: {recipeNumber: 4, recipeName: recipeTitles.silver, recipeImagePath: recipeImages.silver, recipeDescription:recipesDescriptions.silver, recipeContent: recipesContent.silver, recipeIngredients: recipesIngredients.silver}
   }
 
-  const RecipesList = [MainList.pipis, MainList.green_noodes, MainList.sesame_beef];
+  const RecipesList = [MainList.pipis, MainList.green_noodes, MainList.sesame_beef, MainList.silver];
 
-  const MostRecentList = [MainList.sesame_beef, MainList.green_noodes, MainList.pipis];
+  const MostRecentList = [MainList.silver, MainList.sesame_beef, MainList.green_noodes, MainList.pipis];
 
-  const MostPopularList = [MainList.green_noodes, MainList.pipis, MainList.pipis];
+  const MostPopularList = [MainList.green_noodes, MainList.pipis, MainList.sesame_beef, MainList.silver];
 
-  const FavouritesList = [MainList.pipis];
+  const [favouritesList, setFavouritesList] = useState(Constants.FavouriteRecipes);
 
   const [list, setList] = useState(RecipesList);
 
-  const openModalRecipe = (recipeName, recipeImagePath, recipeContent, buttonNam) => {
+  const openModalRecipe = (recipeNum, recipeName, recipeImagePath, recipeContent) => {
     Constants.SelectedRecipe.recipeName = recipeName;
     Constants.SelectedRecipe.recipeImagePath = recipeImagePath;
     Constants.SelectedRecipe.recipeContent = recipeContent;
-    Constants.SelectedRecipe.buttonName = buttonNam;
-    setButtonName(buttonNam);
+    Constants.SelectedRecipe.recipeNumber = recipeNum;
+    switch (recipeNum){
+      case 1:
+        setButtonName(favPipis);
+        break;
+      case 2:
+        setButtonName(favGreen);
+        break;
+      case 3:
+        setButtonName(favSesame);
+        break;
+      case 4:
+        setButtonName(favSilver);
+        break;
+    }
     setModalOpen(true);
-  }
-
-  const onChangeSearch  = query => {
-    setSearchQuery(query);
-    setList(RecipesList);
   }
 
   const onSelectFilter = (selectedItem, index) => {
@@ -500,80 +503,120 @@ export const Recipes = ( { navigation }) => {
       case 'Most Rated':
         setList(RecipesList);
         break;
-
+      
+      case "Favourite Recipes":
+        setList(favouritesList);
+        break;
     }
+
   }
 
-  const onSearchRecipe = () => {
+  const onSearchRecipe = (recipe) => {
     let newList = [];
-    RecipesList.map((item) => {if((item.recipeName.toLowerCase()).includes(searchQuery.toLowerCase())){newList.push(item)}});
+    RecipesList.map((item) => {if((item.recipeName.toLowerCase()).includes(recipe.toLowerCase())){newList.push(item)}});
     setList(newList);
   }
 
 
   const toFavourites = () => {
+    switch(Constants.SelectedRecipe.recipeNumber){
+      case 1:
+        if (favPipis == "md-heart-outline"){
+          setFavPipis("md-heart")
+          setButtonName("md-heart");
+          favouritesList.push(MainList.pipis);
+          setFavouritesList(favouritesList);
+        }
+        else {
+          setFavPipis("md-heart-outline")
+          setButtonName("md-heart-outline");
+          favouritesList.splice(favouritesList.indexOf(MainList.pipis), 1);
+          setFavouritesList(favouritesList);
+        }
+        break;
 
-    if (Constants.SelectedRecipe.buttonName=="md-heart"){
-      switch(Constants.SelectedRecipe.recipeName){
-        case MainList.pipis.recipeName:
-          MainList.pipis.favorite = "md-heart-outline";
-          openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, MainList.pipis.favorite)
-          break;
-        case MainList.green_noodes.recipeName:
-          FavouritesList.splice(FavouritesList.indexOf(MainList.green_noodes), 1);
-          MainList.green_noodes.favorite = "md-heart-outline";
-          openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart-outline")
-          break;
-        case MainList.sesame_beef.recipeName:
-          FavouritesList.splice(FavouritesList.indexOf(MainList.sesame_beef), 1);
-          MainList.sesame_beef.favorite = "md-heart-outline";
-          openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart-outline")
-          break;
-      }
+      case 2:
+        if (favGreen == "md-heart-outline"){
+          setFavGreen("md-heart")
+          setButtonName("md-heart");
+          favouritesList.push(MainList.green_noodes);
+          setFavouritesList(favouritesList);
+        }
+        else {
+          setFavGreen("md-heart-outline")
+          setButtonName("md-heart-outline");
+          favouritesList.splice(favouritesList.indexOf(MainList.green_noodes), 1);
+          setFavouritesList(favouritesList);
+        }
+        break;
+        
+      case 3:
+        if (favSesame == "md-heart-outline"){
+          setFavSesame("md-heart")
+          setButtonName("md-heart");
+          favouritesList.push(MainList.sesame_beef);
+          setFavouritesList(favouritesList);
+        }
+        else {
+          setFavSesame("md-heart-outline")
+          setButtonName("md-heart-outline");
+          favouritesList.splice(favouritesList.indexOf(MainList.sesame_beef), 1);
+          setFavouritesList(favouritesList);
+        }
+        break;
+      case 4:
+        if (favSesame == "md-heart-outline"){
+          setFavSilver("md-heart")
+          setButtonName("md-heart");
+          favouritesList.push(MainList.silver);
+          setFavouritesList(favouritesList);
+          }
+        else {
+            setFavSilver("md-heart-outline")
+            setButtonName("md-heart-outline");
+            favouritesList.splice(favouritesList.indexOf(MainList.silver), 1);
+            setFavouritesList(favouritesList);
+          }
 
     }
-    else if (Constants.SelectedRecipe.buttonName=="md-heart-outline"){
-      switch(Constants.SelectedRecipe.recipeName){
-        case MainList.pipis.recipeName:
-          MainList.pipis.favorite = "md-heart";
-          console.log("on pipis");
-          openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, MainList.pipis.favorite)
-          FavouritesList.push(MainList.pipis);
-          break;
-        case MainList.green_noodes.recipeName:
-          MainList.green_noodes.favorite = "md-heart";
-          console.log("on green");
-          openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart")
-          FavouritesList.push(MainList.green_noodes);
-          break;
-        case MainList.sesame_beef.recipeName:
-          MainList.sesame_beef.favorite = "md-heart";
-          openModalRecipe(Constants.SelectedRecipe.recipeName, Constants.SelectedRecipe.recipeImagePath, Constants.SelectedRecipe.recipeContent, "md-heart")
-          FavouritesList.push(MainList.sesame_beef);
-          break;
-      }
-
-    }
-
   }
 
   const modalClose = () => {
-    switch(Constants.SelectedRecipe.recipeName){
-      case MainList.pipis.recipeName:
-        MainList.pipis.favorite = Constants.SelectedRecipe.buttonName;
-        break;
-    }
-    console.log("On close... " + MainList.pipis.recipeName + "->" + MainList.pipis.favorite);
+  
     setModalOpen(false)
   }
+
+  const [dropdownIconName, setDropDownIconName] = useState("chevron-down-outline")
+
+  const dropdownButton = () => {
+    return (<FontAwesome name={dropdownIconName} size={20}/>)
+  }
+
+  const onSelectOpen = () => {
+    setDropDownIconName('chevron-up-outline')
+  }
+  const onSelectClose = () => {
+    setDropDownIconName('chevron-down-outline')
+  }
+
+  const goBack = (screen) => {
+    Constants.FavouriteRecipes = favouritesList;
+    Constants.favPipis = favPipis;
+    Constants.favGreen = favGreen;
+    Constants.favSesame = favSesame;
+    Constants.favSilver = favSilver;
+    navigation.navigate(screen);
+  }
+
+
 
 
 
   return (
-    <View style={{backgroundColor: '#90EE90',flex:1}}>
+    <View style={{backgroundColor: '#FFFFFF',flex:1}}>
     <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
         <View style={styles.topbar}>
-          <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+          <Pressable style={styles.backButton} onPress={() => goBack("Home")}>
             <FontAwesome name="md-arrow-back" size={25}/>
           </Pressable>
         </View>
@@ -584,37 +627,37 @@ export const Recipes = ( { navigation }) => {
         <View style={{flexDirection: 'row', paddingTop: 6}}>
           <View style={styles.searchBarContainer}>
             <View>
-              <Text style={{paddingBottom: 2, paddingTop: 2}}>Search for recipe</Text>
+              <Text style={{paddingBottom: 2, fontSize: 16, paddingLeft: 5, fontWeight: 'bold', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.25)', width: 140, borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.22)' }}>Search for recipe</Text>
             </View>
-            <Searchbar containerStyle={styles.searchBarContainer} placeholder="Recipe" inputStyle={{fontSize: 16}} onIconPress={onSearchRecipe} onChangeText={onChangeSearch} value={searchQuery}/>
-          </View>
-          <View style={styles.container_VeggieEaterPageButtons}>
-              <Pressable style={styles.veggieEaterPageButtons} onPress={() => onSearchRecipe()}>
-                <Text style={styles.text}>Search</Text>
-              </Pressable>
+            <View style={{paddingLeft:140}}>
+            <SearchBar style={{width: 350, height: 50, borderColor: 'rgba(0, 0, 0, 0.12)', borderWidth: 1}} placeholder="Search here" fontSize={16} onChangeText={(text) => onSearchRecipe(text)} onClearPress={() => onSearchRecipe("")} />
+            </View>
           </View>
         </View>
 
         <View style={{flexDirection: 'row'}}>
           <View style={styles.searchBarContainer}>
             <View>
-              <Text style={{paddingBottom: 2, paddingTop: 2}}>Filter recipes</Text>
+            <Text style={{paddingBottom: 2, fontSize: 16, paddingLeft: 5, fontWeight: 'bold', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.25)', width: 100, borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.22)' }}>Filter recipe:</Text>
             </View>
-            <SelectDropdown data={filters} buttonTextStyle={{fontSize: 16}} onSelect={(selectedItem, index) => onSelectFilter(selectedItem, index)}/>
+            <SelectDropdown buttonStyle={{width: 350, borderWidth:1, borderRadius: 8, borderColor: 'rgba(0, 0, 0, 0.12)'}} data={filters} dropdownIconPosition="right" renderDropdownIcon={dropdownButton} onFocus={onSelectOpen} onBlur={onSelectClose} buttonTextStyle={{fontSize: 16}} onSelect={(selectedItem, index) => onSelectFilter(selectedItem, index)}/>
           </View>
         </View>
 
-        <View style={{paddingLeft: 30, paddingTop: 30}}>
-          <Text>Pick a Recipe:</Text>
-          <View style={{height: 270}}>
+        <View style={{paddingLeft: 30, paddingTop: 30, height: 415}}>
+        <Text style={{paddingBottom: 2, fontSize: 16, paddingLeft: 5, fontWeight: 'bold', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.25)', width: 110, borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.22)' }}>Pick a recipe:</Text>
+          <View style={{height: 320}}>
           <FlatList data={list} renderItem={({item}) => <View style={{paddingTop: 15}}>
+                <Pressable style={styles.recipesButton} onPress={() => openModalRecipe(item.recipeNumber, item.recipeName, item.recipeImagePath, item.recipeContent)}>
                 <View style={{flexDirection: 'row'}}>
-                <Pressable style={styles.recipesButton} onPress={() => openModalRecipe(item.recipeName, item.recipeImagePath, item.recipeContent, item.favorite)}>
+                <View style={{borderWidth:1, borderColor: 'rgba(0,0,0,0.2)'}}>
                 <Image style={styles.recipeImage} source={item.recipeImagePath} />
-                </Pressable>
-                <Text style={{flexShrink:1, paddingLeft: 5}}>{item.recipeDescription}</Text>
                 </View>
-
+                <View style={{width: 250}}>
+                <Text style={{flexShrink:1, paddingLeft: 5, color: 'black', fontWeight: 'bold'}}>{item.recipeDescription}</Text>
+                </View>
+                </View>
+                </Pressable>
             </View>}/>
           </View>
         </View>
@@ -648,10 +691,10 @@ export const Recipes = ( { navigation }) => {
         </View>
       </Modal>
 
-      <View style={styles.container_icons}>
-        <View style={{width:350, paddingLeft: 20}}>
-          <Pressable onPress={() => navigation.navigate('Home')}>
-          <FontAwesome name="md-home" size={30}/>
+      <View style={styles.container_icons_singleVeggie}>
+        <View style={{width:350, paddingLeft: 5, paddingBottom: 5}}>
+          <Pressable onPress={() => goBack("Home")}>
+          <FontAwesome name="md-home" size={25}/>
           </Pressable>
         </View>
       </View>

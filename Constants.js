@@ -7,4 +7,11 @@ export const SelectedVeggieEater = [{name: " "}, {veggieEaterImagePath: ' '}, {V
 
 export const SelectedVegetable = [{vegetableName: ''}, {vegetableImagePath: ''}];
 
-export const SelectedRecipe = [{recipeName: ''}, {recipeImagePath: ' '}, {recipeContent: ''}, {buttonName: 'md-heart-outline'}]
+export const SelectedRecipe = [{recipeNumber:''}, {recipeName: ''}, {recipeImagePath: ' '}, {recipeContent: ''}]
+
+export const FavouriteRecipes = [];
+
+export const favPipis = 'md-heart-outline';
+export const favGreen = 'md-heart-outline';
+export const favSesame = 'md-heart-outline';
+export const favSilver = 'md-heart-outline';
