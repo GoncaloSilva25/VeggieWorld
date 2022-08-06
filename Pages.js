@@ -16,7 +16,7 @@ import styles from './Styles';
 import * as Constants from './Constants';
 
 //import { Searchbar } from 'react-native-paper';
-import SearchBar from "react-native-dynamic-search-bar";
+import SearchBar from 'react-native-dynamic-search-bar';
 import { FlatList } from 'react-native-gesture-handler';
 import FlashMessage from 'react-native-flash-message';
 import  {showMessage, hideMessage} from "react-native-flash-message";
@@ -29,6 +29,11 @@ export const HomeScreen = ( { navigation }) => {
       <ImageBackground source={require('./assets/veg_back.jpg')} resizeMode="cover" style={{width:'100%', height:'100%', justifyContent: 'center'}}>
 
       <ScrollView style={{flex: 1,  paddingBottom:540, paddingTop: 30}}>
+
+      <View style={{justifyContent: 'center', alignItems:'center', paddingBottom: 90}}>
+      <Image source={require('./assets/VeggieWorld.png')} />
+      </View>
+
 
       <View style={{width: '100%', justifyContent: 'center', alignItems:'center'}}>
       <Image style={styles.circle} source={require('./assets/beautifulwoman.jpg')} />
@@ -81,8 +86,8 @@ export const VeggieEaters = ( { navigation }) => {
     </View>
 
 
-    <View style={{width: '100%', justifyContent: 'center', alignItems:'center' }}>
-    <Text style={styles.textTitle}>Veggie Eaters</Text>
+    <View style={{justifyContent: 'center', alignItems:'center'}}>
+          <Image source={require('./assets/VeggieEaters.png')} />
     </View>
 
     <View style={styles.veggieEaterButtonContainer}>
@@ -104,11 +109,14 @@ export const VeggieEaters = ( { navigation }) => {
     </View>
 
     </ScrollView>
-    <View style={{paddingBottom: 50}}>
-        <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
-              <FontAwesome name="md-home" size={25}/>
-        </Pressable>
-    </View>
+    <View style={styles.container_iconh}></View>
+          <View style={styles.container_icon_home}>
+            <View style={{paddingBottom: 15}}>
+                    <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+                          <FontAwesome name="md-home" size={25}/>
+                    </Pressable>
+                </View>
+          </View>
     </ImageBackground>
     </View>
   )
@@ -390,14 +398,14 @@ export const VeggieEater = ( { navigation }) => {
         </Pressable>
       </View>
       </View>
-      <View style={{height: 35}}></View>
-      <View style={styles.container_icons_singleVeggie}>
-        <View style={{width:350}}>
-           <Pressable style={styles.homeButton} onPress={() => navigation.navigate('Home')}>
-               <FontAwesome name="md-home" size={25}/>
-           </Pressable>
+      <View style={styles.container_iconh}></View>
+        <View style={styles.container_icon_home}>
+          <View style={{paddingBottom: 15}}>
+              <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+                    <FontAwesome name="md-home" size={25}/>
+              </Pressable>
+          </View>
         </View>
-      </View>
       </ImageBackground>
       </View>
     )
@@ -620,8 +628,8 @@ export const Recipes = ( { navigation }) => {
             <FontAwesome name="md-arrow-back" size={25}/>
           </Pressable>
         </View>
-        <View style={{width: '100%', justifyContent: 'center', alignItems:'center'}}>
-          <Text style={styles.textTitle}>Recipes</Text>
+        <View style={{justifyContent: 'center', alignItems:'center'}}>
+              <Image source={require('./assets/Recipes.png')} />
         </View>
 
         <View style={{flexDirection: 'row', paddingTop: 6}}>
@@ -644,7 +652,7 @@ export const Recipes = ( { navigation }) => {
           </View>
         </View>
 
-        <View style={{paddingLeft: 30, paddingTop: 30, height: 415}}>
+        <View style={{paddingLeft: 30, paddingTop: 30, height: 370}}>
         <Text style={{paddingBottom: 2, fontSize: 16, paddingLeft: 5, fontWeight: 'bold', color: 'white', backgroundColor: 'rgba(0, 0, 0, 0.25)', width: 110, borderWidth: 1, borderRadius: 6, borderColor: 'rgba(0, 0, 0, 0.22)' }}>Pick a recipe:</Text>
           <View style={{height: 320}}>
           <FlatList data={list} renderItem={({item}) => <View style={{paddingTop: 15}}>
@@ -691,13 +699,15 @@ export const Recipes = ( { navigation }) => {
         </View>
       </Modal>
 
-      <View style={styles.container_icons_singleVeggie}>
-        <View style={{width:350, paddingLeft: 5, paddingBottom: 5}}>
-          <Pressable onPress={() => goBack("Home")}>
-          <FontAwesome name="md-home" size={25}/>
-          </Pressable>
+       <View style={styles.container_iconh}>
+          <View style={styles.container_icon_home}>
+            <View style={{paddingBottom: 10}}>
+                <Pressable style={styles.backButton} onPress={() => navigation.navigate('Home')}>
+                      <FontAwesome name="md-home" size={25}/>
+                </Pressable>
+            </View>
+          </View>
         </View>
-      </View>
 
     </ImageBackground>
     </View>

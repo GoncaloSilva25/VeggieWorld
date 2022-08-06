@@ -266,7 +266,17 @@ export default StyleSheet.create({
         justifyContent: 'flex-end',
         flexDirection:'column',
         backgroundColor: 'rgba(255, 255, 255, 0.5)'
-      },  
+      },
+
+    container_iconh:{
+        flex: 1,
+        justifyContent: 'flex-end',
+    },
+
+    container_icon_home: {
+        paddingTop: 10,
+        backgroundColor: 'rgba(255, 255, 255, 0.5)'
+    },
     
     paragraph: {
         color: 'black',
